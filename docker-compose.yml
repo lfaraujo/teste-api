@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=vivoapi
+      - MYSQL_USER=sa
+      - MYSQL_PASSWORD=12345
+    ports:
+      - 3306:3306
+      
+  check_db_connectivity:
+    image: activatedgeek/mysql-client:0.1
+    depends_on:
+      - db
+    entrypoint: >
+      /bin/sh -c "
+        sleepingTime='10s'
+        totalAttempts=3
+        currentAttempt=1
+  
+        echo \"Start checking whether MySQL database \"vivoapi\" is up & running\" \
+              \"(able to process incoming connections) each $$sleepingTime for a total amount of $$totalAttempts times\"
+  
+        while [ $$currentAttempt -le $$totalAttempts ]; do
+          sleep $$sleepingTime
+  
+          mysql \
+            --host='db' \
+            --port='3306' \
+            --user='sa' \
+            --password='12345' \
+            --execute='USE vivoapi'
+  
+          if [ $$? -eq 0 ]; then
+            echo \"OK: [$$currentAttempt/$$totalAttempts] MySQL database \"vivoapi\" is up & running.\"
+            return 0
+          else
+            echo \"WARN: [$$currentAttempt/$$totalAttempts] MySQL database \"vivoapi\" is still NOT up & running ...\"
+            currentAttempt=`expr $$currentAttempt + 1`
+          fi
+        done;
+  
+        echo 'ERROR: Could not connect to MySQL database \"vivoapi\" in due time.'
+        return 1"
+
+  vivo-api:
+    build: .
+    depends_on:
+      - db
+      - check_db_connectivity
+    ports:
+      - 8086:8080
