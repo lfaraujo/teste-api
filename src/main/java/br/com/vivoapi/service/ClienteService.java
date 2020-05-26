@@ -1,14 +1,14 @@
 package br.com.vivoapi.service;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.vivoapi.dto.ClienteDTO;
 import br.com.vivoapi.model.Cliente;
-import br.com.vivoapi.model.NumeroChip;
+import br.com.vivoapi.model.Produto;
 import br.com.vivoapi.repository.ClienteRepository;
+import br.com.vivoapi.repository.ProdutoRepository;
 
 @Service
 public class ClienteService {
@@ -17,27 +17,17 @@ public class ClienteService {
 	private ClienteRepository clienteRepository;
 
 	@Autowired
-	private NumeroChipService numeroChipService;
+	private ProdutoRepository produtoRepository;
 
-	public Cliente incluir(ClienteDTO clienteDTO) {
+	public void incluir(Cliente cliente) {
+		Cliente clienteCriado = clienteRepository.save(cliente);
 
-		numeroChipService.validarExistenciaNumero(clienteDTO.getNumero());
+		List<Produto> produtos = cliente.getProdutos();
 
-		Optional<Cliente> clienteOptional = clienteRepository.findByCpf(clienteDTO.getCpf());
-		
-		Cliente cliente;
-
-		if (clienteOptional.isPresent()) {
-			cliente = clienteOptional.get();
-		} else {
-			cliente = new Cliente();
-			cliente.setCpf(clienteDTO.getCpf());
-		}
-		
-		NumeroChip numeroChip = new NumeroChip();
-		numeroChip.setNumero(clienteDTO.getNumero());
-		cliente.getNumeros().add(numeroChip);
-		return clienteRepository.save(cliente);
+		produtos.forEach(p -> {
+			p.setCliente(clienteCriado);
+			produtoRepository.save(p);
+		});
 	}
 
 }

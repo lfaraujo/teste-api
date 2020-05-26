@@ -5,14 +5,13 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import br.com.vivoapi.enums.TipoRegistro;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,30 +19,34 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "registro_cdr")
+@Table(name = "produto")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class RegistroCdr implements Serializable {
+public class Produto implements Serializable {
 
-	private static final long serialVersionUID = -3679711232684823862L;
+	private static final long serialVersionUID = -7905990218308032131L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
 	private Long id;
 
-	@Column(nullable = false)
-	private Long origem;
-
-	private String destino;
-
-	@Enumerated(EnumType.ORDINAL)
-	@Column(nullable = false)
-	private TipoRegistro tipoRegistro;
+	@Column(unique = true, nullable = false)
+	private String numero;
 
 	@Column(nullable = false)
-	private Long consumo;
-	
+	private Integer qtdDados;
+
+	@Column(nullable = false)
+	private Integer qtdSms;
+
+	@Column(nullable = false)
+	private Integer qtdMinutos;
+
 	@Column(insertable = false)
-	private LocalDateTime dataInclusao;
+	private LocalDateTime dataHabilitacao;
+
+	@ManyToOne
+	@JoinColumn(name = "cliente_id", referencedColumnName = "id")
+	private Cliente cliente;
 
 }

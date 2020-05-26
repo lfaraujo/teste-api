@@ -5,11 +5,10 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import br.com.vivoapi.model.NumeroChip;
+import br.com.vivoapi.model.Produto;
 
 @Repository
-public interface NumeroChipRepository extends JpaRepository<NumeroChip, Long> {
+public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 
-	Optional<NumeroChip> findByNumero(String numero);
-
+	Optional<Produto> findByNumero(String numero);
 }

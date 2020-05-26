@@ -8,8 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -29,10 +29,10 @@ public class Cliente implements Serializable {
 	@EqualsAndHashCode.Include
 	private Long id;
 
-	@Column(unique = true)
+	@Column(unique = true, nullable = false)
 	private String cpf;
 
-	@OneToMany(mappedBy = "cliente")
-	private List<NumeroChip> numeros;
-	
+	@Transient
+	private List<Produto> produtos;
+
 }

@@ -2,6 +2,7 @@ package br.com.vivoapi.dto;
 
 import java.io.Serializable;
 
+import br.com.vivoapi.enums.TipoRegistro;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,12 +12,16 @@ public class RegistroCdrDTO implements Serializable {
 
 	private static final long serialVersionUID = -8986030303645988439L;
 
-	private String numero;
+	private String origem;
 
-	private Integer tipoCdr;
+	private String destino;
+
+	private TipoRegistro tipoRegistro;
 
 	private Long consumo;
 
-	private Long valor;
+	public void setTipoRegistro(String tipoRegistro) {
+		this.tipoRegistro = TipoRegistro.valueOf(tipoRegistro.toUpperCase());
+	}
 
 }

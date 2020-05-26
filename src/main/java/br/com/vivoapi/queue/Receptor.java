@@ -11,10 +11,15 @@ import br.com.vivoapi.service.RegistroCdrService;
 public class Receptor {
 
 	@Autowired
-	RegistroCdrService registroCdrService;
+	private RegistroCdrService registroCdrService;
 
-	@RabbitListener(queues = "registro-cdr-queue")
+	@RabbitListener(queues = "registro-cdr-queue-inclusao")
 	public void receberMensagem(byte[] mensagem) {
 		registroCdrService.incluir(SerializationUtils.deserialize(mensagem));
+	}
+
+	@RabbitListener(queues = "registro-cdr-queue-exclusao")
+	public void receberMensagem(Long mensagem) {
+		registroCdrService.excluir(mensagem);
 	}
 }

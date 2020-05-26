@@ -4,15 +4,14 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+@Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public enum TipoCdr {
+public enum TipoRegistro {
 
-	VOZ(1, "Voz"), DADOS_MOVEIS(2, "Dados Móveis"), SMS(3, "SMS");
+	VOZ(0, "Voz"), DADOS_MOVEIS(1, "Dados Móveis"), SMS(2, "SMS");
 
-	@Getter
 	private Integer codigo;
 
-	@Getter
 	private String descricao;
 
 }
