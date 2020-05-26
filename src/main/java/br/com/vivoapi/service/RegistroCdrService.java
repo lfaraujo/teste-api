@@ -1,5 +1,6 @@
 package br.com.vivoapi.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,10 @@ public class RegistroCdrService {
 
 	public Optional<RegistroCdr> buscar(Long id) {
 		return registroCdrRepository.findById(id);
+	}
+
+	public List<RegistroCdr> consultarExtrato(String numero) {
+		return registroCdrRepository.findByOrigemAndTipoRegistro(numero);
 	}
 
 }

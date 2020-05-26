@@ -69,49 +69,81 @@ CREATE TRIGGER trigger_registro_ins
     ON registro_cdr
     FOR EACH ROW
 BEGIN
-    DECLARE saldo_voz_calc INT;
-    DECLARE saldo_dados_calc INT;
-    DECLARE saldo_sms_calc INT;
-
-    SELECT CASE
-               WHEN rc.tipo_registro = 0 AND p.qtd_minutos - rc.consumo IS NOT NULL
-                   THEN p.qtd_minutos - rc.consumo
-               WHEN rc.tipo_registro = 0 AND p.qtd_minutos - rc.consumo < 0
-                   THEN 0
-               ELSE p.qtd_minutos
-               END AS saldo_voz,
-           CASE
-               WHEN rc.tipo_registro = 1 AND p.qtd_dados - rc.consumo IS NOT NULL
-                   THEN p.qtd_dados - rc.consumo
-               WHEN rc.tipo_registro = 1 AND p.qtd_dados - rc.consumo < 0
-                   THEN 0
-               ELSE
-                   p.qtd_dados
-               END AS saldo_dados,
-           CASE
-               WHEN rc.tipo_registro = 2 AND p.qtd_sms - rc.consumo IS NOT NULL
-                   THEN p.qtd_sms - rc.consumo
-               WHEN rc.tipo_registro = 2 AND p.qtd_sms - rc.consumo < 0
-                   THEN 0
-               ELSE p.qtd_sms
-               END AS saldo_sms
-    INTO saldo_voz_calc, saldo_dados_calc, saldo_sms_calc
-    FROM produto p
-             LEFT JOIN registro_cdr rc
-                       ON p.id = rc.origem
-    WHERE p.id = NEW.origem;
-
     IF NOT EXISTS(SELECT id FROM saldo WHERE saldo.produto = NEW.origem)
     THEN
-        INSERT INTO saldo (produto, saldo_dados, saldo_minutos, saldo_sms)
-        VALUES (NEW.origem, saldo_dados_calc, saldo_voz_calc, saldo_sms_calc);
+        BEGIN
+            DECLARE saldo_voz_calc INT;
+            DECLARE saldo_dados_calc INT;
+            DECLARE saldo_sms_calc INT;
+
+            SELECT CASE
+                       WHEN NEW.tipo_registro = 0 AND p.qtd_minutos - NEW.consumo IS NOT NULL
+                           THEN p.qtd_minutos - NEW.consumo
+                       WHEN NEW.tipo_registro = 0 AND p.qtd_minutos - NEW.consumo < 0
+                           THEN 0
+                       ELSE p.qtd_minutos
+                       END AS saldo_voz,
+                   CASE
+                       WHEN NEW.tipo_registro = 1 AND p.qtd_dados - NEW.consumo IS NOT NULL
+                           THEN p.qtd_dados - NEW.consumo
+                       WHEN NEW.tipo_registro = 1 AND p.qtd_dados - NEW.consumo < 0
+                           THEN 0
+                       ELSE
+                           p.qtd_dados
+                       END AS saldo_dados,
+                   CASE
+                       WHEN NEW.tipo_registro = 2 AND p.qtd_sms - NEW.consumo IS NOT NULL
+                           THEN p.qtd_sms - NEW.consumo
+                       WHEN NEW.tipo_registro = 2 AND p.qtd_sms - NEW.consumo < 0
+                           THEN 0
+                       ELSE p.qtd_sms
+                       END AS saldo_sms
+            INTO saldo_voz_calc, saldo_dados_calc, saldo_sms_calc
+            FROM produto p
+            WHERE p.id = NEW.origem;
+
+            INSERT INTO saldo (produto, saldo_dados, saldo_minutos, saldo_sms)
+            VALUES (NEW.origem, saldo_dados_calc, saldo_voz_calc, saldo_sms_calc);
+        END;
     ELSE
-        UPDATE saldo
-        SET saldo_dados      = saldo_dados_calc,
-            saldo_minutos    = saldo_voz_calc,
-            saldo_sms        = saldo_sms_calc,
-            data_atualizacao = NOW()
-        WHERE produto = NEW.origem;
+        BEGIN
+            DECLARE saldo_voz_att INT;
+            DECLARE saldo_dados_att INT;
+            DECLARE saldo_sms_att INT;
+
+            SELECT CASE
+                       WHEN NEW.tipo_registro = 0 AND s.saldo_minutos - NEW.consumo IS NOT NULL
+                           THEN s.saldo_minutos - NEW.consumo
+                       WHEN NEW.tipo_registro = 0 AND s.saldo_minutos - NEW.consumo < 0
+                           THEN 0
+                       ELSE s.saldo_minutos
+                       END AS saldo_voz,
+                   CASE
+                       WHEN NEW.tipo_registro = 1 AND s.saldo_dados - NEW.consumo IS NOT NULL
+                           THEN s.saldo_dados - NEW.consumo
+                       WHEN NEW.tipo_registro = 1 AND s.saldo_dados - NEW.consumo < 0
+                           THEN 0
+                       ELSE
+                           s.saldo_dados
+                       END AS saldo_dados,
+                   CASE
+                       WHEN NEW.tipo_registro = 2 AND s.saldo_sms - NEW.consumo IS NOT NULL
+                           THEN s.saldo_sms - NEW.consumo
+                       WHEN NEW.tipo_registro = 2 AND s.saldo_sms - NEW.consumo < 0
+                           THEN 0
+                       ELSE s.saldo_sms
+                       END AS saldo_sms
+            INTO saldo_voz_att, saldo_dados_att, saldo_sms_att
+            FROM saldo s
+            WHERE s.produto = NEW.origem;
+
+            UPDATE saldo
+            SET saldo_dados      = saldo_dados_att,
+                saldo_minutos    = saldo_voz_att,
+                saldo_sms        = saldo_sms_att,
+                data_atualizacao = NOW()
+            WHERE produto = NEW.origem;
+        END;
     END IF;
 END;
 

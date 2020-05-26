@@ -42,7 +42,7 @@ public class RegistroCdr implements Serializable {
 
 	@Column(nullable = false)
 	private Long consumo;
-	
+
 	@Column(insertable = false)
 	private LocalDateTime dataInclusao;
 

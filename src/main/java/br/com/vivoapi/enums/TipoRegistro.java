@@ -8,7 +8,7 @@ import lombok.Getter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum TipoRegistro {
 
-	VOZ(0, "Voz"), DADOS_MOVEIS(1, "Dados Móveis"), SMS(2, "SMS");
+	VOZ(0, "Voz"), DADOS(1, "Dados"), SMS(2, "SMS");
 
 	private Integer codigo;
 
