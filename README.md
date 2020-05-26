@@ -19,6 +19,8 @@ Para rodar a aplicação, você precisa:
 
 > Para mais definições de como configurar as variáveis de ambiente das imagens, favor verificar arquivo [docker-compose.yml](https://github.com/lfaraujo/teste-api/blob/master/docker-compose.yml)
 
+> Para subir a aplicação dentro do mesmo contâiner das demais imagens, basta alterar o "localhost" contido no [application.properties](https://github.com/lfaraujo/teste-api/blob/master/src/main/resources/application.properties) para os valores contidos em "container_name" dentro do arquivo [docker-compose.yml](https://github.com/lfaraujo/teste-api/blob/master/docker-compose.yml)
+
 ### Observações acerca do ambiente de desenvolvimento utilizado
 - Sistema Operacional: Windows 10 x64
 - IDE: STS 4
