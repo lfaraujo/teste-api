@@ -14,7 +14,7 @@ A documentação da aplicação foi gerada utilizando o [Swagger](https://swagge
 
 ### Subindo a aplicação
 Para rodar a aplicação, você precisa:
-- Instalar o **MySQL** e criar o a base **vivoapi** com o usuário **root** e senha **password** (ou subir imagem **mysql:5.7** com o Docker e definir environment para os itens anteriores, além da porta **3306**)
+- Instalar o **MySQL** e criar a base **vivoapi** com o usuário **root** e senha **password** (ou subir imagem **mysql:5.7** com o Docker e definir environment para os itens anteriores, além da porta **3306**)
 - Instalar o **RabbitMQ** com acesso para usuário **guest** e senha **guest** (ou subir imagem **rabbitmq:3.8.4-rc.3-management** com o Docker e definir portas **5672** e **15672**)
 - Possuir o **Java 11** e o **Maven** instalados e configurados e rodar o servidor local (ou subir **imagem** deste projeto através do [repositório do DockerHub](https://hub.docker.com/repository/docker/felipekx/vivo-api))
 
