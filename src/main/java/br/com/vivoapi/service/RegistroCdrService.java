@@ -21,11 +21,11 @@ public class RegistroCdrService {
 	ProdutoRepository produtoRepository;
 
 	public void incluir(RegistroCdrDTO registroCdrDTO) {
-		Optional<Produto> produto = produtoRepository.findByNumero(registroCdrDTO.getOrigem());
+		Produto produto = produtoRepository.findByNumero(registroCdrDTO.getOrigem());
 
-		if (produto.isPresent()) {
+		if (produto != null) {
 			RegistroCdr registroCdr = new RegistroCdr();
-			registroCdr.setOrigem(produto.get().getId());
+			registroCdr.setOrigem(produto.getId());
 			registroCdr.setDestino(registroCdrDTO.getDestino());
 			registroCdr.setTipoRegistro(registroCdrDTO.getTipoRegistro());
 			registroCdr.setConsumo(registroCdrDTO.getConsumo());

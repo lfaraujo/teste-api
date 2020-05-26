@@ -1,3 +1,0 @@
-docker-compose up --exit-code-from check_db_connectivity check_db_connectivity `
-;if ($LASTEXITCODE -eq 0) { docker-compose --file docker-compose.yml up vivo-api } `
-else { echo "ERROR: Failed to start service due to one of its dependencies!" }
