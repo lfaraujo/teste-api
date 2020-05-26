@@ -38,3 +38,5 @@ A aplicação consiste em receber as requisições voltadas ao CDR e direcionar 
 Há um listener na aplicação que contém 2 métodos (cada um apontando para uma das filas), e estes métodos serão responsáveis por chamar os serviços de inclusão/exclusão de registros de CDR. Dessa forma, não haverá concorrência por mais que haja uma grande quantidade de requisições.
 
 Já para as requisições de inclusão de clientes e consultas, são gerenciadas de forma direta pela aplicação. Para auxiliar no registro e atualização de saldos, foram criadas 2 triggers na base de dados (associadas a produto e registro_cdr). 
+
+> Para efeito de visualização da [arquitetura](https://github.com/lfaraujo/teste-api/tree/master/desenho_arquitetura) e do [modelo do banco](https://github.com/lfaraujo/teste-api/tree/master/modelo_banco) acesse estes links.
