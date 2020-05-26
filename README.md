@@ -7,6 +7,7 @@ Projeto de teste para criação de uma API
 - [RabbitMQ](https://www.rabbitmq.com/#getstarted)
 - [MySQL](https://www.mysql.com/downloads/)
 - [FlyWay](https://flywaydb.org/download/)
+- [Swagger](https://swagger.io/tools/)
 
 ### Documentação da aplicação
 A documentação da aplicação foi gerada utilizando o [Swagger](https://swagger.io/tools/). 
