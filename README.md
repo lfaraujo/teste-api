@@ -28,3 +28,13 @@ Para rodar a aplicação, você precisa:
 - Docker v19.03.8
 - MySQL 5.7
 - RabbitMQ 3.8.4
+
+### Explicando a arquitetura utilizada
+A aplicação consiste em receber as requisições voltadas ao CDR e direcionar para a fila do gerenciador RabbitMQ, onde há 2 filas:
+
+- Inclusão
+- Exclusão
+
+Há um listener na aplicação que contém 2 métodos (cada um apontando para uma das filas), e estes métodos serão responsáveis por chamar os serviços de inclusão/exclusão de registros de CDR. Dessa forma, não haverá concorrência por mais que haja uma grande quantidade de requisições.
+
+Já para as requisições de inclusão de clientes e consultas, são gerenciadas de forma direta pela aplicação. Para auxiliar no registro e atualização de saldos, foram criadas 2 triggers na base de dados (associadas a produto e registro_cdr). 
