@@ -6,6 +6,7 @@ Projeto de teste para criação de uma API
 - [Docker](https://www.docker.com/products/docker-desktop)
 - [RabbitMQ](https://www.rabbitmq.com/#getstarted)
 - [MySQL](https://www.mysql.com/downloads/)
+- [FlyWay](https://flywaydb.org/download/)
 
 ### Documentação da aplicação
 A documentação da aplicação foi gerada utilizando o [Swagger](https://swagger.io/tools/). 
