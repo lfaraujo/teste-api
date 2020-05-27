@@ -62,6 +62,12 @@ BEGIN
         INSERT INTO saldo (produto, saldo_dados, saldo_minutos, saldo_sms)
         VALUES (NEW.id, NEW.qtd_dados, NEW.qtd_minutos, NEW.qtd_sms);
     END IF;
+
+    IF NOT EXISTS(SELECT id FROM fatura WHERE produto_id = NEW.id)
+    THEN
+        INSERT INTO fatura (produto_id, data_emissao, mes_referencia, periodo_inicio, periodo_fim, valor)
+        VALUES (NEW.id, NOW(), '2020-05-01', NOW(), '2020-05-31', 0.00);
+    END IF;
 END;
 
 CREATE TRIGGER trigger_registro_ins
